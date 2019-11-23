@@ -25,40 +25,46 @@ switch (command) {
     break;
 
   case "spotify-this-song":
-    const spotify = new Spotify(keys.spotify);
+    (function spotifySearch() {
+      const spotify = new Spotify(keys.spotify);
 
-    spotify
-      .search({ type: "track", query: input, limit: 5 })
+      spotify
+        .search({ type: "track", query: input, limit: 5 })
 
-      .then(function(data) {
-        let song = data.tracks.items;
-        for (let i = 0; i < song.length; i++) {
-          let tracks = song[i];
+        .then(function(data) {
+          let song = data.tracks.items;
+          for (let i = 0; i < song.length; i++) {
+            let tracks = song[i];
 
-          console.log(`                 
+            console.log(`                 
           \n Artist: ${tracks.artists[0].name}
           \n Track: ${tracks.name}
           \n Album: ${tracks.album.name}
           \n Preview Link: ${tracks.preview_url}
           \n-=-=-=-==-=-=-=-=-=-=-=-=-=-=-==-=- `);
-        }
-      });
+          }
+        });
+    })();
     break;
 
   case "movie-this":
-    axios
-      .get("http://www.omdbapi.com/?i=tt3896198&apikey=a3207054&t=" + input)
-      .then(function(response) {
-        let movieTitle = response.data.Title;
-        let movieYear = response.data.Year;
-        let movieRatingImdb = response.data.Ratings[0].Value;
-        // let rottenTomaotoes = response.dataRatings[1].Value;
-        let movieProduceCountry = response.data.Production; //If return underined make witty message
-        let movieLang = response.data.Language;
-        let plotThiccens = response.data.Plot;
-        let actors = response.data.Actors;
-        console.log(
-          `\n---------------------------
+    if (input === "") {
+      input = "Mr.Nobody";
+    }
+    (function movieSearch() {
+      axios
+        .get("http://www.omdbapi.com/?i=tt3896198&apikey=a3207054&t=" + input)
+        .then(function(response) {
+          let movieTitle = response.data.Title;
+          let movieYear = response.data.Year;
+          let movieRatingImdb = response.data.Ratings[0].Value;
+          // let rottenTomaotoes = response.dataRatings[1].Value;
+          let movieProduceCountry = response.data.Production; //If return underined make witty message
+          let movieLang = response.data.Language;
+          let plotThiccens = response.data.Plot;
+          let actors = response.data.Actors;
+          console.log(
+            `\n---------------------------
             \nMovie Title: ${movieTitle}
             \nYear: ${movieYear}
             \nIMDB Rating: ${movieRatingImdb}
@@ -67,11 +73,13 @@ switch (command) {
             \nPlot: ${plotThiccens}
             \nActors/Actresses: ${actors}
             \n---------------------------`
-        );
-      });
+          );
+        });
+    })();
     break;
 
   case "do-what-it-says":
+    movieSearch();
     break;
 
   default:
