@@ -22,4 +22,4 @@ That response is stored in variables and returned to the user in the form of a C
 
 If nothing is stored in the command or input arguements, the application will throw an error, stating that the User has made an error and need to check their spelling
 
-![]("./images/Screen Shot 2019-11-24 at 1.14.04 AM.png")
+<img src= ./images/Screen Shot 2019-11-24 at 1.14.04 AM.png>
