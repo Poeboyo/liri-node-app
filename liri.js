@@ -1,4 +1,5 @@
-require("dotenv").config(); //Allows the .env file to be used by the app
+require("dotenv").config();
+const concertVenue = require("./concertVenue"); //Allows the .env file to be used by the app
 const spotifySearch = require("./spotifySearch"); //Modularization for the Spotify Search Function
 const movieSearch = require("./movieSearch"); //Modularization for the Movie Search Function
 const doWhatItSays = require("./dwis"); //Modularzation for Do What It Says function

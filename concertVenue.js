@@ -1,4 +1,5 @@
 const axios = require("axios");
+const moment = require("moment");
 
 function concertVenue(input) {
   if (input === "") {
@@ -9,15 +10,22 @@ function concertVenue(input) {
       `https://rest.bandsintown.com/artists/${input}/events?app_id=codingbootcamp&date=upcoming`
     )
     .then(function(response) {
-      let newEvent = response[0];
-      console.log(newEvent);
-      // console.log(`
-      //   \n Venue: ${newEvent.venue}
-      //   \n Location: ${newEvent.venue}, ${newEvent.venue}
-      //   \n Event Time & Date: ${newEvent.datetime}
-      //   \n The concert date/time: ${moment(newEvent[0].datetime).format(
-      //     "dddd, MMMM Do YYYY, h:mm:ss a"
-      //   )}`);
+      let newEvent = response.data;
+
+      if (newEvent.venue === undefined) {
+        console.log(
+          `We Have Found No Concerts Nearby for ${input.split("+")}  :( `
+        );
+      } else {
+        console.log(`
+        \n_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+
+        \n Venue: ${newEvent[0].venue.city}
+        \n Location: ${newEvent[0].venue.city}, ${newEvent[0].venue.region}
+        \n Event Time & Date: ${newEvent[0].datetime}
+        \n Concert Date/Time: ${moment(newEvent[0].venue.datetime).format(
+          "dd, MMMM Do YYYY, h:mm:ss a"
+        )}\n`);
+      }
     });
 }
 // * Name of the venue
@@ -26,4 +34,3 @@ function concertVenue(input) {
 
 // * Date of the Event (use moment to format this as "MM/DD/YYYY")
 module.exports = concertVenue;
-c;
