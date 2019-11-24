@@ -1,85 +1,26 @@
-require("dotenv").config();
-var fs = require("fs");
-const keys = require("./keys.js");
-const axios = require("axios");
-const Spotify = require("node-spotify-api");
+require("dotenv").config(); //Allows the .env file to be used by the app
+const spotifySearch = require("./spotifySearch"); //Modularization for the Spotify Search Function
+const movieSearch = require("./movieSearch"); //Modularization for the Movie Search Function
+const doWhatItSays = require("./dwis"); //Modularzation for Do What It Says function
+let command = process.argv[2]; //Checks the command put in by the user
+let input = process.argv.slice(3).join("+"); // Takes in the arguement from user
 
-let command = process.argv[2];
-
-let input = process.argv.slice(3).join("+");
-
+//Switch case to check command input
 switch (command) {
   case "concert-this":
-    // axios
-    //   .get(
-    //     `https://rest.bandsintown.com/artists/${input}/events?app_id=123456789&date=upcoming`
-    //   )
-    //   .then(function(response) {
-    //     console.log(response);
-    //   });
-    // * Name of the venue
-
-    // * Venue location
-
-    // * Date of the Event (use moment to format this as "MM/DD/YYYY")
+    concertVenue(input);
     break;
 
   case "spotify-this-song":
-    (function spotifySearch() {
-      const spotify = new Spotify(keys.spotify);
-
-      spotify
-        .search({ type: "track", query: input, limit: 5 })
-
-        .then(function(data) {
-          let song = data.tracks.items;
-          for (let i = 0; i < song.length; i++) {
-            let tracks = song[i];
-
-            console.log(`                 
-          \n Artist: ${tracks.artists[0].name}
-          \n Track: ${tracks.name}
-          \n Album: ${tracks.album.name}
-          \n Preview Link: ${tracks.preview_url}
-          \n-=-=-=-==-=-=-=-=-=-=-=-=-=-=-==-=- `);
-          }
-        });
-    })();
+    spotifySearch(input);
     break;
 
   case "movie-this":
-    if (input === "") {
-      input = "Mr.Nobody";
-    }
-    (function movieSearch() {
-      axios
-        .get("http://www.omdbapi.com/?i=tt3896198&apikey=a3207054&t=" + input)
-        .then(function(response) {
-          let movieTitle = response.data.Title;
-          let movieYear = response.data.Year;
-          let movieRatingImdb = response.data.Ratings[0].Value;
-          // let rottenTomaotoes = response.dataRatings[1].Value;
-          let movieProduceCountry = response.data.Production; //If return underined make witty message
-          let movieLang = response.data.Language;
-          let plotThiccens = response.data.Plot;
-          let actors = response.data.Actors;
-          console.log(
-            `\n---------------------------
-            \nMovie Title: ${movieTitle}
-            \nYear: ${movieYear}
-            \nIMDB Rating: ${movieRatingImdb}
-            \nCountry: ${movieProduceCountry}
-            \nLanguage: ${movieLang}
-            \nPlot: ${plotThiccens}
-            \nActors/Actresses: ${actors}
-            \n---------------------------`
-          );
-        });
-    })();
+    movieSearch(input);
     break;
 
   case "do-what-it-says":
-    movieSearch();
+    doWhatItSays();
     break;
 
   default:
